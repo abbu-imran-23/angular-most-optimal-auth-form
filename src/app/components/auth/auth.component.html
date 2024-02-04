@@ -1,0 +1,11 @@
+<div class="flex flex-col justify-center bg-neutral-200 font-mono items-center gap-5 border rounded-md px-7 py-5">
+    <h1 class="text-3xl">Welcome to Todo App</h1>
+    <form [formGroup]="authForm" (ngSubmit)="onSubmit(authForm.value)" class="flex flex-col justify-center items-center gap-4">
+      <app-input *ngIf="variant === 'REGISTER'" label="Name" type="text" formControlValue="name" [authForm]="authForm"></app-input>
+      <app-input label="Email" type="email" formControlValue="email" [authForm]="authForm"></app-input>
+      <app-input label="Password" type="password" formControlValue="password" [authForm]="authForm"></app-input>
+      <app-button variant={{variant}}></app-button>
+    </form>
+    <a (click)="handleRegister()" *ngIf="variant === 'LOGIN'" class="cursor-pointer">New User? Register</a>
+</div>
+
