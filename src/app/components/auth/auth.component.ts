@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-auth',
@@ -9,10 +10,13 @@ import { Router } from '@angular/router';
 })
 export class AuthComponent implements OnInit {
 
+  variant: string = "LOGIN";
+
   authForm: FormGroup;
 
   formBuilder = inject(FormBuilder);
   router = inject(Router)
+  authService = inject(AuthService);
 
   ngOnInit(): void {
     if(this.variant === "REGISTER") {
@@ -32,8 +36,17 @@ export class AuthComponent implements OnInit {
 
   onSubmit(data: any) {
     if(this.authForm.valid) {
-      console.log(data);
-      this.router.navigate(['todos']);
+      if(this.variant === "LOGIN") {
+        console.log("Login Credentials", data);
+        this.authService.setLoggedIn(true);
+        localStorage.setItem('loginStatus', "authenticated");
+        this.router.navigate(['/home']);
+      }
+      else {
+        console.log("Register Details", data);
+        this.variant = "LOGIN";
+        this.ngOnInit();
+      }
       this.authForm.reset();
     }
     else {
@@ -41,11 +54,14 @@ export class AuthComponent implements OnInit {
     }
   }
 
-  handleRegister() {
-    this.variant = "REGISTER";
+  switchAuth(variant: string) {
+    if(variant === "LOGIN") {
+      this.variant = "REGISTER";
+    }
+    else  {
+      this.variant = "LOGIN";
+    }
     this.ngOnInit();
   }
-
-  variant: string = "LOGIN";
 
 }

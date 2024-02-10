@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
-import { TodosComponent } from './pages/todos/todos.component';
+import { AuthGuardService } from './services/auth-guard.service';
+import { HomePageComponent } from './pages/home-page/home-page.component';
 
 const routes: Routes = [
   {
@@ -9,9 +10,10 @@ const routes: Routes = [
     component: LandingPageComponent
   }, 
   {
-    path: "todos",
-    component: TodosComponent
-  }
+    path: "home",
+    component: HomePageComponent,
+    canActivate: [AuthGuardService]
+  },
 ];
 
 @NgModule({
